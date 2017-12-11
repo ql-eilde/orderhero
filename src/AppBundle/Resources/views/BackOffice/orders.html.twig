@@ -1,0 +1,79 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <header id="header">
+            <h1>Commandes en cours <a style="color:#3498db;font-size:16px;text-decoration:none;padding-left:1%" href="{{ path('orders_history') }}">voir l'historique des commandes</a></h1>
+        <header>
+        <div id="main">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <table id="last-orders-sportpo" class="last-tables">
+                            <thead>
+                                <tr>
+                                    <th>Numéro table</th>
+                                    <th>Commande</th>
+                                    <th>Montant total</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if orders is not empty %}
+                                    {% for order in orders %}
+                                        <tr>
+                                            <td># {{ order.tableId }}</td>
+                                            <td>
+                                                <ul style="list-style-type:none;line-height:1.8;padding-left:0">
+                                                    {% for item in ordersItems %}
+                                                        {% if item.barOrder.id == order.id %}
+                                                            <li>{{ item.barProduct.title }} - {{ item.barProduct.capacity }}</li>
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </ul>
+                                            </td>
+                                            <td>{{ order.total|number_format(2,'.','.') }} €</td>
+                                            <td>
+                                                <button name="served" class="nephritis-flat-button" value="{{ order.id }}">Servi !</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4">Pas de commandes</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(document).ready(function(){
+        $('button').click(function() {
+            if(this.name == "served") {
+                $(this).attr("disabled","disabled");
+                var orderId = this.value;
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path("orders") }}',
+                    data: {
+                        id: orderId
+                    },
+                    success: function(){
+                        console.log('ok');
+                        //window.location='{{ path("orders") }}';
+                    }
+                });
+            }
+        });
+    });
+    </script>
+{% endblock %}

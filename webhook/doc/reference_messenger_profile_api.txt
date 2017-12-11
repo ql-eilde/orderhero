@@ -1,0 +1,18 @@
+URI requests:
+https://graph.facebook.com/v2.6/me/messenger_profile?access_token=<PAGE_ACCESS_TOKEN>
+
+How to add whitelisted domains:
+
+Resource: https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/domain-whitelisting
+
+How to add a "Get started" button:
+
+Resource: https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/get-started-button
+
+How to add a greeting message:
+
+Resource: https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/greeting
+
+How to add a persistent menu:
+
+Resource: https://developers.facebook.com/docs/messenger-platform/reference/messenger-profile-api/persistent-menu

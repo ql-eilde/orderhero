@@ -1,0 +1,64 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Historique Commandes{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <header id="header">
+            <h1>Historique des commandes <a style="color:#3498db;font-size:16px;text-decoration:none;padding-left:1%" href="{{ path('orders') }}">revenir aux commandes en cours</a></h1>
+        </header>
+        <div id="main">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <table id="last-orders-sportpo" class="last-tables">
+                            <thead>
+                                <tr>
+                                    <th>Identifiant</th>
+                                    <th>Date</th>
+                                    <th>Numéro table</th>
+                                    <th>Total</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if orders is not empty %}
+                                    {% for order in orders %}
+                                        <tr>
+                                            <td>{{ order.id }}</td>
+                                            <td>{{ order.timestamp|date("d/m/Y H:i") }}</td>
+                                            <td># {{ order.tableId }}</td>
+                                            <td>{{ order.total|number_format(2,'.','.') }} €</td>
+                                            <td>
+                                                <button name="details" class="nephritis-flat-button" value="{{ order.id }}">Détails</button>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="5">Aucun historique de commandes</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+    $(document).ready(function(){
+        $('button').click(function() {
+            if(this.name == "details") {
+                $(this).attr("disabled","disabled");
+                var orderId = this.value;
+                var route = "{{ path('order', {'id': "PLACEHOLDER"}) }}";
+                window.location = route.replace("PLACEHOLDER", orderId);
+            }
+        });
+    });
+    </script>
+{% endblock %}
