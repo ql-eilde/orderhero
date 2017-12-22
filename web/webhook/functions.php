@@ -4,11 +4,11 @@ include 'templates.php';
 include 'getData.php';
 include 'cart.php';
 
-function handleMessage($sender, $message) {
+function handleMessage($sender, $message, $db) {
 	$response = "";
 	switch(strtolower($message)) {
 		case 'carte':
-			$response = showMenu(getMenu("first_menu"), "first_menu");
+			$response = showMenu(getMenu("first_menu", $db), "first_menu");
 			break;
 		default:
 			$response = defaultResponse();
@@ -17,7 +17,7 @@ function handleMessage($sender, $message) {
 	reply($response, $sender);
 }
 
-function handlePostback($sender, $payload) {
+function handlePostback($sender, $payload, $db) {
 	$response = "";
 	switch($payload) {
 		case 'conversation_started':
@@ -25,13 +25,13 @@ function handlePostback($sender, $payload) {
 			break;
 		case 'YesShowMeTheMenu':
 		case 'anotherDrink':
-			$response = showMenu(getMenu("first_menu"), "first_menu");
+			$response = showMenu(getMenu("first_menu", $db), "first_menu");
 			break;
 		case 'DontShowMeTheMenu':
 			$response = dontShowMenu();
 			break;
 		case 'payMyOrder':
-			$total = getTotalOfCart($sender);
+			$total = getTotalOfCart($sender, $db);
 			$response = payOrder($sender, $total['total']);
 			break;
 		default:
@@ -39,26 +39,26 @@ function handlePostback($sender, $payload) {
 	}
 	if($response === "") {
 		// TODO: Gerer les fin de menus et produits
-		$menuPayloads = getMenuPayloads();
-		$menuLocations = getMenuLocations();
-		$productsPayloads = getProductsPayloads();
-		$productsLocations = getProductsLocations();
+		$menuPayloads = getMenuPayloads($db);
+		$menuLocations = getMenuLocations($db);
+		$productsPayloads = getProductsPayloads($db);
+		$productsLocations = getProductsLocations($db);
 		switch(true) {
 			case in_array($payload, $menuPayloads):
 				$location = "first_page:".$payload;
-				$response = showProducts(getProducts($payload), $location, $payload);
+				$response = showProducts(getProducts($payload, $db), $location, $payload);
 				break;
 			case in_array($payload, $menuLocations):
-				$response = showMenu(getMenu($payload), $payload);
+				$response = showMenu(getMenu($payload, $db), $payload);
 				break;
 			case in_array($payload, $productsLocations):
 				$show = explode(":", $payload);
-				$response = showProducts(getProducts($payload), $payload, $show[1]);
+				$response = showProducts(getProducts($payload, $db), $payload, $show[1]);
 				break;
 			case in_array($payload, $productsPayloads):
-				$product = getProduct($payload);
-				addToCart($sender, $product);
-				$total = getTotalOfCart($sender);
+				$product = getProduct($payload, $db);
+				addToCart($sender, $product, $db);
+				$total = getTotalOfCart($sender, $db);
 				$response = anotherDrink($sender, $total['total']);
 				break;
 			default:

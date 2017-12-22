@@ -1,5 +1,10 @@
 <?php
 
+$db = mysqli_connect('localhost', 'root', 'BCGA1203ql;', 'orderhero');
+if(!$db) {
+	die('Erreur de connexion (' . mysqli_connect_errno() . ') '. mysqli_connect_error());
+}
+
 require_once('stripe/init.php');
 include 'cart.php';
 include 'order.php';
@@ -9,7 +14,7 @@ include 'order.php';
 if($_SERVER['REQUEST_METHOD'] === 'POST') {
     $token = $_POST['stripeToken'];
     $psid = $_POST['psid'];
-    $cart = getCart($psid);
+    $cart = getCart($psid, $db);
     $amount = floatval($cart['total']) * 100;
 
     try {
@@ -19,12 +24,12 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
             "description" => "Paiement Barbot",
             "source" => $token,
         ));
-        setOrder($cart, $charge->id);
-        $cartItems = getCartItems($cart);
+        setOrder($cart, $charge->id, $db);
+        $cartItems = getCartItems($cart, $db);
         foreach($cartItems as $item) {
-            setOrderItem($item, $charge->id);
+            setOrderItem($item, $charge->id, $db);
         }
-        deleteCart($cart['id']);
+        deleteCart($cart['id'], $db);
         header('Location: html/success.html');
         die();
     } catch(\Stripe\Error\Card $e) {

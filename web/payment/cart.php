@@ -1,7 +1,6 @@
 <?php
 
-function getCart($sender) {
-	include '../db.php';
+function getCart($sender, $db) {
 	$sender = intval($sender);
 	$requete = "
 		SELECT *
@@ -17,8 +16,7 @@ function getCart($sender) {
 	return $data;
 }
 
-function getCartItems($cart) {
-	include '../db.php';
+function getCartItems($cart, $db) {
 	$id = $cart['id'];
 	$requete = "
 		SELECT *
@@ -34,8 +32,7 @@ function getCartItems($cart) {
 	return $data;
 }
 
-function deleteCart($cartId) {
-	include '../db.php';
+function deleteCart($cartId, $db) {
 	$requete = "
 		DELETE FROM `bar_cart`
 		WHERE `id` = ?

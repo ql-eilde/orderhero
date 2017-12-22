@@ -211,7 +211,7 @@ function showProducts($data, $location, $payload) {
 }
 
 function anotherDrink($sender, $total) {
-	$url = "https://barbot.eu.ngrok.io/barbot/app/backoffice/payment/pay.php?psid=".$sender."&total=".$total;
+	$url = "https://www.orderhero.fr/payment/pay.php?psid=".$sender."&total=".$total;
 	$response = [
 		"attachment"=>[
 			"type"=>"template",
@@ -245,7 +245,7 @@ function anotherDrink($sender, $total) {
 }
 
 function payOrder($sender, $total) {
-	$url = "https://barbot.eu.ngrok.io/barbot/app/backoffice/payment/pay.php?psid=".$sender."&total=".$total;
+	$url = "https://www.orderhero.fr/payment/pay.php?psid=".$sender."&total=".$total;
 	$response = [
 		"attachment"=>[
 			"type"=>"template",

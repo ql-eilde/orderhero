@@ -1,13 +1,12 @@
 <?php
 
-function addToCart($sender, $product) {
-	$cart = getCart($sender);
-	setCartItem($product, $cart['id']);
-	setCartTotal($cart);
+function addToCart($sender, $product, $db) {
+	$cart = getCart($sender, $db);
+	setCartItem($product, $cart['id'], $db);
+	setCartTotal($cart, $db);
 }
 
-function getCart($sender) {
-	include '../db.php';
+function getCart($sender, $db) {
 	$sender = intval($sender);
 	$requete = "
 		SELECT *
@@ -23,8 +22,7 @@ function getCart($sender) {
 	return $data;
 }
 
-function setCart($sender, $timestamp, $table_id) {
-	include '../db.php';
+function setCart($sender, $timestamp, $table_id, $db) {
 	$requete = "
 		INSERT INTO `bar_cart` (`customer_id`,`table_id`,`timestamp`)
 		VALUES (?,?,?)
@@ -37,9 +35,8 @@ function setCart($sender, $timestamp, $table_id) {
 	}
 }
 
-function setCartTotal($cart) {
+function setCartTotal($cart, $db) {
 	$total = getCartTotal($cart);
-	include '../db.php';
 	$requete = "
 		UPDATE `bar_cart`
 		SET `total` = ?
@@ -54,7 +51,7 @@ function setCartTotal($cart) {
 }
 
 function getCartTotal($cart) {
-	$cartItems = getCartItems($cart);
+	$cartItems = getCartItems($cart, $db);
 
 	$total_array = array();
 	foreach($cartItems as $item) {
@@ -65,8 +62,7 @@ function getCartTotal($cart) {
 	return $total;
 }
 
-function setCartItem($product, $cartId) {
-	include '../db.php';
+function setCartItem($product, $cartId, $db) {
 	$cartId = intval($cartId);
 	$requete= "
 		INSERT INTO `bar_cart_item` (`bar_cart_id`,`bar_product_id`,`quantity`,`price`,`tax`,`total`)
@@ -81,8 +77,7 @@ function setCartItem($product, $cartId) {
 	}
 }
 
-function getCartItems($cart) {
-	include '../db.php';
+function getCartItems($cart, $db) {
 	$id = $cart['id'];
 	$requete = "
 		SELECT *
@@ -98,8 +93,7 @@ function getCartItems($cart) {
 	return $data;
 }
 
-function deleteCart($cartId) {
-	include '../db.php';
+function deleteCart($cartId, $db) {
 	$requete = "
 		DELETE FROM `bar_cart`
 		WHERE `id` = ?
@@ -112,8 +106,7 @@ function deleteCart($cartId) {
 	}
 }
 
-function deleteCartItems($cartId) {
-	include '../db.php';
+function deleteCartItems($cartId, $db) {
 	$requete = "
 		DELETE FROM `bar_cart_item`
 		WHERE `bar_cart_id` = ?

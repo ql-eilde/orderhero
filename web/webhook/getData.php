@@ -1,7 +1,6 @@
 <?php
 
-function getMenuPayloads() {
-	include '../db.php';
+function getMenuPayloads($db) {
 	$requete = "SELECT `payload` FROM `bar_menu`";
 
 	if($query = mysqli_query($db, $requete)) {
@@ -16,8 +15,7 @@ function getMenuPayloads() {
 	return $menuPayloads;
 }
 
-function getProductsPayloads() {
-	include '../db.php';
+function getProductsPayloads($db) {
 	$requete = "SELECT `payload` FROM `bar_product`";
 
 	if($query = mysqli_query($db, $requete)) {
@@ -32,8 +30,7 @@ function getProductsPayloads() {
 	return $productsPayloads;
 }
 
-function getProducts($payload) {
-	include '../db.php';
+function getProducts($payload, $db) {
 	if(preg_match("/^show/", $payload) === 1) {
 		$payload = "first_page:".$payload;
 	}
@@ -52,8 +49,7 @@ function getProducts($payload) {
 	return $data;
 }
 
-function getProduct($payload) {
-	include '../db.php';
+function getProduct($payload, $db) {
 	$requete = "
 		SELECT *
 		FROM `bar_product`
@@ -69,8 +65,7 @@ function getProduct($payload) {
 	return $data;
 }
 
-function getMenu($location) {
-	include '../db.php';
+function getMenu($location, $db) {
 	$requete = "
 		SELECT `title`,`subtitle`,`payload`
 		FROM `bar_menu`
@@ -86,8 +81,7 @@ function getMenu($location) {
 	return $data;
 }
 
-function getMenuLocations() {
-	include '../db.php';
+function getMenuLocations($db) {
 	$requete = "SELECT DISTINCT `location` FROM `bar_menu`";
 
 	if($query = mysqli_query($db, $requete)) {
@@ -102,8 +96,7 @@ function getMenuLocations() {
 	return $menuLocations;
 }
 
-function getProductsLocations() {
-	include '../db.php';
+function getProductsLocations($db) {
 	$requete = "SELECT DISTINCT `location` FROM `bar_product`";
 
 	if($query = mysqli_query($db, $requete)) {
@@ -118,8 +111,7 @@ function getProductsLocations() {
 	return $productsLocations;
 }
 
-function getTotalOfCart($sender) {
-	include '../db.php';
+function getTotalOfCart($sender, $db) {
 	$requete = "
 		SELECT `total`
 		FROM `bar_cart`
@@ -134,8 +126,7 @@ function getTotalOfCart($sender) {
 	return $data;
 }
 
-function userHasCart($psid) {
-	include '../db.php';
+function userHasCart($psid, $db) {
 	$requete = "
 		SELECT `id`
 		FROM `bar_cart`
