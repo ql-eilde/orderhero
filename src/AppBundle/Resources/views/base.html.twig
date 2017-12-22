@@ -5,11 +5,217 @@
 	<title>{% block title %}Default{% endblock %}</title>
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" >
-	{% block stylesheets %}
+	<style type="text/css">
+		/* body is the flex-container */
+		body {
+			display: flex;
+			min-height: 100vh;
+			overflow-x: hidden;
+		}
+		[id="sidebar"] {
+			width: 20rem;
+		}
+		[id="wrapper"] {
+			flex: 1;
+		}
+
+		.box {
+			box-shadow: 0 0 1px rgba(0,0,0,.15);
+			background-color: #fff;
+			position: relative;
+			margin-bottom: 1.5rem;
+		}
+
+		.p-a {
+			padding: 1.5rem;
+		}
+
+		.box-info {
+			font-size: 2.2em;
+		}
+
+		.box-legend {
+			line-height: 2.5;
+			text-align: right;
+		}
+
+		table.last-tables {
+			width: 100%;
+			border-collapse: collapse;
+		}
+		.last-tables tr:nth-of-type(odd) {
+			background: #f2f4f5;
+		}
+		.last-tables th {
+			background: #f1c40f;
+			color: #fff;
+			font-weight: 400;
+		}
+		.last-tables td, th {
+			padding: 13px;
+			border: 1px solid #ccc;
+			text-align: left;
+		}
+		.last-tables-title {
+			padding: 8px;
+			font-size: 18px;
+		}
+
+		.nephritis-flat-button {
+			position: relative;
+			vertical-align: top;
+			width: 100%;
+			height: 60px;
+			padding: 0;
+			font-size: 22px;
+			color: white;
+			text-align: center;
+			text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+			background: #27ae60;
+			border: 0;
+			border-bottom: 2px solid #219d55;
+			cursor: pointer;
+			-webkit-box-shadow: inset 0 -2px #219d55;
+			box-shadow: inset 0 -2px #219d55;
+			}
+			.nephritis-flat-button:active {
+			top: 1px;
+			outline: none;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+			}
+
+		#header h1 {
+			font-weight: 400;
+		}
+
+		/* small screens */
+		@media (max-width: 767px) {
+			.box-legend {
+				text-align: left;
+			}
+			table, thead, tbody, th, td, tr {
+				display: block;
+			}
+			.last-tables thead tr {
+				position: absolute;
+				top: -9999px;
+				left: -9999px;
+			}
+			.last-tables tr {
+				border: 1px solid #ccc;
+			}
+			.last-tables td {
+				border: none;
+				border-bottom: 1px solid #eee;
+				position: relative;
+				padding-left: 50%;
+			}
+			.last-tables td:before {
+				position: absolute;
+				top: 6px;
+				left: 6px;
+				width: 45%;
+				padding-right: 10px;
+				white-space: nowrap;
+			}
+			#last-orders-sportpo td:nth-of-type(1):before { content: "Date"; }
+			#last-orders-sportpo td:nth-of-type(2):before { content: "Numéro"; }
+			#last-orders-sportpo td:nth-of-type(3):before { content: "Client"; }
+			#last-orders-sportpo td:nth-of-type(4):before { content: "Prix total"; }
+
+			#last-orders-market td:nth-of-type(1):before { content: "Date"; }
+			#last-orders-market td:nth-of-type(2):before { content: "Numéro"; }
+			#last-orders-market td:nth-of-type(3):before { content: "Client"; }
+			#last-orders-market td:nth-of-type(4):before { content: "Prix total"; }
+			#last-orders-market td:nth-of-type(5):before { content: "Origine"; }
+			[id="sidebar"] {
+				position: absolute;
+			}
+			[id="wrapper"] {
+				-webkit-transform: translateX(0) translateZ(0);
+				transform: translateX(0) translateZ(0);
+				-webkit-transition: -webkit-transform .2s;
+				transition: transform .2s;
+				will-change: transform;
+			}
+			[id="wrapper"]:not(.is-closed) {
+				-webkit-transform: translateX(20rem);
+				transform: translateX(20rem);
+			}
+
+			/* Button deco */
+			[id="wrapper"] > button {
+				display: block;
+				z-index: 1;
+				height: 3.5rem; width: 3.5rem;
+				background-color: transparent;
+				background-image: -webkit-gradient(linear, left top, right top, from(#333), to(#333)), -webkit-gradient(linear, left top, right top, from(#333), to(#333)), -webkit-gradient(linear, left top, right top, from(#333), to(#333));
+				background-image: -webkit-linear-gradient(left, #333, #333), -webkit-linear-gradient(left, #333, #333), -webkit-linear-gradient(left, #333, #333);
+				background-image: linear-gradient(to right, #333, #333),
+					linear-gradient(to right, #333, #333),
+					linear-gradient(to right, #333, #333);
+				background-position: center top, center, center bottom;
+				background-repeat: no-repeat;
+				-webkit-background-size: 3.5rem .9rem;
+								background-size: 3.5rem .9rem;
+				padding: 0;
+				outline: 0;
+				border: 0;
+				cursor: pointer;
+				-webkit-tap-highlight-color:rgba(0,0,0,0);
+			}
+		}
+
+		/* Navigation deco */
+		[id="navigation"] a {
+			display: block;
+			padding: 10px;
+			margin-bottom: 2px;
+			text-decoration: none;
+			background: rgba(255,255,255, 0.2);
+		}
+		[id="navigation"] a:hover {
+			background: rgba(173,173,173,0.1);
+		}
+
+		/* Global deco */
+		* {
+			box-sizing: border-box;
+		}
+		html {
+			font-size: 62.5%;
+		}
+		body {
+			margin: 0;
+			padding: 0;
+			background: #2980b9;
+			color: #fff;
+			font-size: 1.6em;
+			font-family: "Century Gothic", helvetica, arial, sans-serif;
+		}
+		a {
+			color: #fff;
+		}
+		[id="sidebar"] {
+			background: #2980b9;
+			color: #fff;
+		}
+		[id="sidebar"] h2 {
+			text-align: center;
+		}
+		[id="wrapper"] {
+			min-height: 100vh;
+			padding: 2rem;
+			background-color: #fff;
+			color: #2c2d30;
+		}
+	</style>
+	{# {% block stylesheets %}
 		{% stylesheets 'bundles/app/css/style.css' filter='cssrewrite' %}
 			<link rel="stylesheet" type="text/css" href="{{ asset_url }}">
 		{% endstylesheets %}
-	{% endblock %}
+	{% endblock %} #}
 	<script
 	  src="https://code.jquery.com/jquery-3.2.1.min.js"
 	  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
@@ -32,10 +238,43 @@
 	</aside>
 	{% block body %}
   {% endblock %}
-	{% block javascripts %}
+	<script type="application/javascript">
+		// config
+		var maxBreakpoint = 767; // maximum breakpoint
+		var targetID = 'wrapper'; // target ID (must be present in DOM)
+		var triggerID = 'toggle-nav'; // trigger/button ID (will be created into targetID)
+
+		// targeting navigation
+		var n = document.getElementById(targetID);
+
+		// nav initially closed is JS enabled
+		n.classList.add('is-closed');
+
+		// global navigation function
+		function navi() {
+			// create a switch button, and toggle class
+			if (window.matchMedia("(max-width:" + maxBreakpoint + "px)").matches && document.getElementById(triggerID) == undefined) {
+				n.insertAdjacentHTML('afterBegin', '<button id=' + triggerID + ' title="open/close navigation"></button>');
+				t = document.getElementById(triggerID);
+				t.onclick = function() {
+					n.classList.toggle('is-closed');
+				}
+			}
+			// when big screen, delete switch button, and toggle navigation class
+			var minBreakpoint = maxBreakpoint + 1;
+			if (window.matchMedia("(min-width: " + minBreakpoint + "px)").matches && document.getElementById(triggerID)) {
+				document.getElementById(triggerID).outerHTML = "";
+			}
+		}
+		navi();
+
+		// when resize or orientation change, reload function
+		window.addEventListener('resize', navi);
+	</script>
+	{# {% block javascripts %}
 			{% javascripts 'bundles/app/js/toggle-nav.js' %}
 				<script src="{{ asset_url }}"></script>
 			{% endjavascripts %}
-		{% endblock %}
+	{% endblock %} #}
 </body>
 </html>
