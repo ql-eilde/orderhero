@@ -1,6 +1,6 @@
 <?php
 
-$db = mysqli_connect('localhost', 'root', 'BCGA1203ql;', 'orderhero');
+$db = mysqli_connect('localhost', 'root', 'root', 'symfony');
 if(!$db) {
 	die('Erreur de connexion (' . mysqli_connect_errno() . ') '. mysqli_connect_error());
 }
