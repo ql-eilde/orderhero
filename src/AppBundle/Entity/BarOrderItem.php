@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * BarOrderItem
  *
  * @ORM\Table(name="bar_order_item")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BarOrderItemRepository")
  */
 class BarOrderItem
 {

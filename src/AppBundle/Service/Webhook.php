@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Service\Template;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use AppBundle\Entity\BarCart;
 
 class Webhook
 {
@@ -16,12 +17,32 @@ class Webhook
         $this->container = $container;
     }
 
-    public function reply($response, $sender)
+    public function handleMessage(BarCart $cart, $message)
+    {
+        switch(strtolower($message)) {
+            case 'carte':
+                //$response = $this->template->showMenu();
+                $response = ["text"=>"superbe !"];
+                break;
+            default:
+                $response = $this->template->defaultResponse();
+        }
+
+        $this->reply($response, $cart->getCustomerId());
+    }
+
+    public function handlePostback(BarCart $cart, $payload)
+    {
+        $response = ["text"=>"ok bien recu"];
+        $this->reply($response, $cart->getCustomerId());
+    }
+
+    public function reply($response, $psid)
     {
         $message = [
             "messaging_type"=>"RESPONSE",
             "recipient"=>[
-                "id"=>$sender
+                "id"=>$psid
             ],
             "message"=>$response
         ];
@@ -34,25 +55,5 @@ class Webhook
         curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
     
         curl_exec($ch);
-    }
-
-    public function handleMessage($sender, $message)
-    {
-        $response = "";
-        switch(strtolower($message)) {
-            case 'carte':
-                $response = $this->template->showMenu();
-                break;
-            default:
-                $response = $this->template->defaultResponse();
-        }
-
-        $this->reply($response, $sender);
-    }
-
-    public function handlePostback($sender, $payload)
-    {
-        $response = ["text"=>"ok bien recu"];
-        $this->reply($response, $sender);
     }
 }

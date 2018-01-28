@@ -4,65 +4,63 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Entity\BarCart;
+use AppBundle\Entity\BarCartItem;
+use AppBundle\Entity\BarProduct;
 
 class BarCartRepository extends EntityRepository
 {
-    private $newCart;
-
-    public function __construct(BarCart $cart)
-    {
-        parent::__construct();
-        $this->newCart = $cart;
-    }
-
-    public function userHasCart($psid)
+    public function addToCart(BarCart $cart, BarProduct $product)
     {
         $em = $this->getEntityManager();
-
-        $query = $em->createQuery(
-            'SELECT bc.id
-            FROM AppBundle:BarCart bc
-            WHERE bc.customerId = :psid'
-        )->setParameter('psid', $psid);
-
-        $response = $query->getResult();
-
-        if(count($response) === 0) {
-            return false;
-        }
-        return true;
-    }
-
-    public function addToCart($sender, $product)
-    {
-        $cart = $this->getCart($sender);
-        $this->setCartItem($product, $cart['id']);
+        $cartItemRepo = $em->getRepository('AppBundle:BarCartItem');
+        $cartItemRepo->setCartItem($product, $cart->getId());
         $this->setCartTotal($cart);
     }
 
-    public function getCart($sender)
+    public function setCart($psid, $table_id)
     {
-        $sender = intval($sender);
         $em = $this->getEntityManager();
+        $newCart = new BarCart();
 
-        $query = $em->createQuery(
-            'SELECT *
-            FROM AppBundle:BarCart bc
-            WHERE bc.customerId = :psid'
-        )->setParameter('psid', $sender);
-        
-        return $query->getResult();
+        $newCart->setCustomerId($psid);
+        $newCart->setTableId($tableId);
+
+        $em->persist($newCart);
+        $em->flush();
+
+        return $newCart;
     }
 
-    public function setCart($sender, $timestamp, $table_id)
+    public function getCartTotal(BarCart $cart)
+    {
+        $em = $this->getEntityManager();
+        $cartItemRepo = $em->getRepository('AppBundle:BarCartItem');
+
+        $cartItems = $cartItemRepo->findByBarCart($cart);
+
+        $total_array = array();
+        foreach($cartItems as $item) {
+            $total_array[] = $item['total'];
+        }
+        $total = array_sum($total_array);
+        
+        return $total;
+    }
+
+    public function setCartTotal(BarCart $cart)
+    {
+        $em = $this->getEntityManager();
+        $total = $this->getCartTotal($cart);
+
+        $cart->setTotal($total);
+        $em->flush();
+    }
+
+    public function deleteCart(BarCart $cart)
     {
         $em = $this->getEntityManager();
 
-        $this->newCart->setCustomerId($sender);
-        $this->newCart->setTableId($tableId);
-        $this->newCart->setTimestamp($timestamp);
-
-        $em->persist($this->newCart);
+        $em->remove($cart);
         $em->flush();
     }
 }

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="bar_cart")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BarCartRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class BarCart
 {
@@ -155,5 +156,13 @@ class BarCart
     public function getTotal()
     {
         return $this->total;
+    }
+
+    /** 
+     * @ORM\PrePersist 
+     */
+    public function doStuffOnPrePersist()
+    {
+        $this->timestamp = time();
     }
 }

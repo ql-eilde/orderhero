@@ -8,7 +8,8 @@ use Doctrine\ORM\Mapping as ORM;
  * BarOrder
  *
  * @ORM\Table(name="bar_order")
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\BarOrderRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class BarOrder
 {
@@ -216,5 +217,13 @@ class BarOrder
     public function getIsServed()
     {
         return $this->isServed;
+    }
+
+    /** 
+     * @ORM\PrePersist 
+     */
+    public function doStuffOnPrePersist()
+    {
+        $this->timestamp = time();
     }
 }

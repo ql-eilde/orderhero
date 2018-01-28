@@ -126,19 +126,19 @@ function getTotalOfCart($sender, $db) {
 	return $data;
 }
 
-function userHasCart($psid, $db) {
-	$requete = "
-		SELECT `id`
-		FROM `bar_cart`
-		WHERE `customer_id` = '$psid'
-	";
+// function userHasCart($psid, $db) {
+// 	$requete = "
+// 		SELECT `id`
+// 		FROM `bar_cart`
+// 		WHERE `customer_id` = '$psid'
+// 	";
 
-	if($query = mysqli_query($db, $requete)) {
-		$num_rows = mysqli_num_rows($query);
-		mysqli_free_result($query);
-		if($num_rows === 0) {
-			return false;
-		}
-		return true;
-	}
-}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		$num_rows = mysqli_num_rows($query);
+// 		mysqli_free_result($query);
+// 		if($num_rows === 0) {
+// 			return false;
+// 		}
+// 		return true;
+// 	}
+// }
