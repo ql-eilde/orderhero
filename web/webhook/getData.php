@@ -1,34 +1,34 @@
 <?php
 
-function getMenuPayloads($db) {
-	$requete = "SELECT `payload` FROM `bar_menu`";
+// function getMenuPayloads($db) {
+// 	$requete = "SELECT `payload` FROM `bar_menu`";
 
-	if($query = mysqli_query($db, $requete)) {
-		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
+// 		mysqli_free_result($query);
+// 	}
 
-	foreach($resultat as $value) {
-		$menuPayloads[] = $value['payload'];
-	}
+// 	foreach($resultat as $value) {
+// 		$menuPayloads[] = $value['payload'];
+// 	}
 
-	return $menuPayloads;
-}
+// 	return $menuPayloads;
+// }
 
-function getProductsPayloads($db) {
-	$requete = "SELECT `payload` FROM `bar_product`";
+// function getProductsPayloads($db) {
+// 	$requete = "SELECT `payload` FROM `bar_product`";
 
-	if($query = mysqli_query($db, $requete)) {
-		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
+// 		mysqli_free_result($query);
+// 	}
 
-	foreach($resultat as $value) {
-		$productsPayloads[] = $value['payload'];
-	}
+// 	foreach($resultat as $value) {
+// 		$productsPayloads[] = $value['payload'];
+// 	}
 
-	return $productsPayloads;
-}
+// 	return $productsPayloads;
+// }
 
 function getProducts($payload, $db) {
 	if(preg_match("/^show/", $payload) === 1) {
@@ -65,36 +65,36 @@ function getProduct($payload, $db) {
 	return $data;
 }
 
-function getMenu($location, $db) {
-	$requete = "
-		SELECT `title`,`subtitle`,`payload`
-		FROM `bar_menu`
-		WHERE `location` = '$location'
-		LIMIT 4
-	";
+// function getMenu($location, $db) {
+// 	$requete = "
+// 		SELECT `title`,`subtitle`,`payload`
+// 		FROM `bar_menu`
+// 		WHERE `location` = '$location'
+// 		LIMIT 4
+// 	";
 
-	if($query = mysqli_query($db, $requete)) {
-		for($data = array();$row = mysqli_fetch_assoc($query);$data[] = $row);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		for($data = array();$row = mysqli_fetch_assoc($query);$data[] = $row);
+// 		mysqli_free_result($query);
+// 	}
 
-	return $data;
-}
+// 	return $data;
+// }
 
-function getMenuLocations($db) {
-	$requete = "SELECT DISTINCT `location` FROM `bar_menu`";
+// function getMenuLocations($db) {
+// 	$requete = "SELECT DISTINCT `location` FROM `bar_menu`";
 
-	if($query = mysqli_query($db, $requete)) {
-		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
+// 		mysqli_free_result($query);
+// 	}
 
-	foreach($resultat as $value) {
-		$menuLocations[] = $value['location'];
-	}
+// 	foreach($resultat as $value) {
+// 		$menuLocations[] = $value['location'];
+// 	}
 
-	return $menuLocations;
-}
+// 	return $menuLocations;
+// }
 
 function getProductsLocations($db) {
 	$requete = "SELECT DISTINCT `location` FROM `bar_product`";
@@ -111,20 +111,20 @@ function getProductsLocations($db) {
 	return $productsLocations;
 }
 
-function getTotalOfCart($sender, $db) {
-	$requete = "
-		SELECT `total`
-		FROM `bar_cart`
-		WHERE `customer_id` = '$sender'
-	";
+// function getTotalOfCart($sender, $db) {
+// 	$requete = "
+// 		SELECT `total`
+// 		FROM `bar_cart`
+// 		WHERE `customer_id` = '$sender'
+// 	";
 
-	if($query = mysqli_query($db, $requete)) {
-		$data = mysqli_fetch_assoc($query);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		$data = mysqli_fetch_assoc($query);
+// 		mysqli_free_result($query);
+// 	}
 
-	return $data;
-}
+// 	return $data;
+// }
 
 // function userHasCart($psid, $db) {
 // 	$requete = "

@@ -11,30 +11,28 @@ class BarCartRepository extends EntityRepository
 {
     public function addToCart(BarCart $cart, BarProduct $product)
     {
-        $em = $this->getEntityManager();
-        $cartItemRepo = $em->getRepository('AppBundle:BarCartItem');
+        $cartItemRepo = $this->_em->getRepository('AppBundle:BarCartItem');
         $cartItemRepo->setCartItem($product, $cart->getId());
         $this->setCartTotal($cart);
     }
 
-    public function setCart($psid, $table_id)
+    public function setCart($psid, $tableId)
     {
-        $em = $this->getEntityManager();
         $newCart = new BarCart();
 
         $newCart->setCustomerId($psid);
         $newCart->setTableId($tableId);
+        $newCart->setTotal(0);
 
-        $em->persist($newCart);
-        $em->flush();
+        $this->_em->persist($newCart);
+        $this->_em->flush();
 
         return $newCart;
     }
 
     public function getCartTotal(BarCart $cart)
     {
-        $em = $this->getEntityManager();
-        $cartItemRepo = $em->getRepository('AppBundle:BarCartItem');
+        $cartItemRepo = $this->_em->getRepository('AppBundle:BarCartItem');
 
         $cartItems = $cartItemRepo->findByBarCart($cart);
 
@@ -49,18 +47,28 @@ class BarCartRepository extends EntityRepository
 
     public function setCartTotal(BarCart $cart)
     {
-        $em = $this->getEntityManager();
         $total = $this->getCartTotal($cart);
 
         $cart->setTotal($total);
-        $em->flush();
+        $this->_em->flush();
     }
 
     public function deleteCart(BarCart $cart)
     {
-        $em = $this->getEntityManager();
+        $this->_em->remove($cart);
+        $this->_em->flush();
+    }
 
-        $em->remove($cart);
-        $em->flush();
+    public function getTotalOfCart(BarCart $cart)
+    {
+        $query = $this->_em->createQuery(
+            'SELECT bc.total
+            FROM AppBundle:BarCart bc
+            WHERE bc.customerId = :psid'
+        )->setParameter('psid', $cart->getCustomerId());
+
+        $total = $query->getResult();
+
+        return $total;
     }
 }

@@ -17,7 +17,6 @@ class BarCartItemRepository extends EntityRepository
 
     public function setCartItem(BarProduct $product, BarCart $cart)
     {
-        $em = $this->getEntityManager();
         $newCartItem = new BarCartItem();
 
         $newCartItem->setQuantity(1);
@@ -25,8 +24,8 @@ class BarCartItemRepository extends EntityRepository
         $newCartItem->setBarProduct($product);
         $newCartItem->setBarCart($cart);
 
-        $em->persist($newCartItem);
-        $em->flush();
+        $this->_em->persist($newCartItem);
+        $this->_em->flush();
     }
 
     public function deleteCartItems(BarCart $cart)
