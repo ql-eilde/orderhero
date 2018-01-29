@@ -4,7 +4,8 @@ namespace AppBundle\Service;
 
 class Template
 {
-    public function welcomeMessage() {
+    public function welcomeMessage()
+    {
         $response = [
             "attachment"=>[
                 "type"=>"template",
@@ -35,13 +36,15 @@ class Template
         return $response;
     }
 
-    public function defaultResponse() {
+    public function defaultResponse()
+    {
         $response = ["text"=>"Je ne sais pas encore dire beaucoup de choses en revanche, je peux vous montrer la carte si vous envoyez 'carte'. Merci et à votre santé!"];
     
         return $response;	
     }
 
-    public function showMenu($data, $location) {
+    public function showMenu($data, $location)
+    {
         switch($location) {
             case "first_menu":
                 $payload = "second_menu";
@@ -70,7 +73,7 @@ class Template
                             "subtitle"=>$data[0]['subtitle'],
                             "buttons"=>[
                                 [
-                                    "title"=>"Voir les ".strtolower($data[0]['title']),
+                                    "title"=>"Voir les ".mb_strtolower($data[0]['title'], 'UTF-8'),
                                     "type"=>"postback",
                                     "payload"=>$data[0]['payload'],
                                 ]
@@ -81,7 +84,7 @@ class Template
                             "subtitle"=>$data[1]['subtitle'],
                             "buttons"=>[
                                 [
-                                    "title"=>"Voir les ".strtolower($data[1]['title']),
+                                    "title"=>"Voir les ".mb_strtolower($data[1]['title'], 'UTF-8'),
                                     "type"=>"postback",
                                     "payload"=>$data[1]['payload'],
                                 ]
@@ -92,7 +95,7 @@ class Template
                             "subtitle"=>$data[2]['subtitle'],
                             "buttons"=>[
                                 [
-                                    "title"=>"Voir les ".strtolower($data[2]['title']),
+                                    "title"=>"Voir les ".mb_strtolower($data[2]['title'], 'UTF-8'),
                                     "type"=>"postback",
                                     "payload"=>$data[2]['payload'],
                                 ]
@@ -103,7 +106,7 @@ class Template
                             "subtitle"=>$data[3]['subtitle'],
                             "buttons"=>[
                                 [
-                                    "title"=>"Voir les ".strtolower($data[3]['title']),
+                                    "title"=>"Voir les ".mb_strtolower($data[3]['title'], 'UTF-8'),
                                     "type"=>"postback",
                                     "payload"=>$data[3]['payload'],
                                 ]
@@ -124,13 +127,15 @@ class Template
         return $response;
     }
 
-    public function dontShowMenu() {
+    public function dontShowMenu()
+    {
         $response = ["text"=>"Pas de problème. Tappez 'carte' à tout moment pour afficher notre carte :-)"];
     
         return $response;
     }
 
-    public function showProducts($data, $location, $payload) {
+    public function showProducts($data, $location, $payload)
+    {
         switch($location) {
             case "first_page:".$payload:
                 $showMore = "second_page:".$payload;
@@ -214,7 +219,8 @@ class Template
         return $response;
     }
 
-    public function anotherDrink($sender, $total) {
+    public function anotherDrink($sender, $total)
+    {
         $url = "https://www.orderhero.fr/payment/pay.php?psid=".$sender."&total=".$total;
         $response = [
             "attachment"=>[
@@ -248,7 +254,8 @@ class Template
         return $response;
     }
 
-    public function payOrder($sender, $total) {
+    public function payOrder($sender, $total)
+    {
         $url = "https://www.orderhero.fr/payment/pay.php?psid=".$sender."&total=".$total;
         $response = [
             "attachment"=>[

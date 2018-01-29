@@ -31,14 +31,11 @@ class WebhookController extends Controller
         // }
         // Fin vérification du webhook
 
-        $test = $this->getDoctrine()->getRepository('AppBundle:BarProduct')->getProductsPayloads();
-        var_dump($test);
-        die();
-
         $input = json_decode(file_get_contents('php://input'), true);
 
         $psid= $input['entry'][0]['messaging'][0]['sender']['id'];
         $cart = $this->getDoctrine()->getRepository('AppBundle:BarCart')->findOneByCustomerId($psid);
+
         if(isset($input['entry'][0]['messaging'][0]['message'])) {
             if(empty($cart)) {
                 $response = ["text"=>"Veuillez tout d'abord scanner un code messenger. C'est pour mieux vous servir mon enfant!"];

@@ -13,13 +13,13 @@ class BarMenuRepository extends EntityRepository
             FROM AppBundle:BarMenu bm'
         );
 
-        $menuPayloads = $query->getResult();
+        $results = $query->getResult();
 
-        foreach($menuPayloads as $menuPayload) {
-            $final[] = $menuPayload['payload'];
+        foreach($results as $result) {
+            $menuPayloads[] = $result['payload'];
         }
 
-        return $final;
+        return $menuPayloads;
     }
 
     public function getMenu($location)
@@ -35,14 +35,18 @@ class BarMenuRepository extends EntityRepository
         return $menu;
     }
 
-    public function getLocations()
+    public function getMenuLocations()
     {
         $query = $this->_em->createQuery(
             'SELECT DISTINCT bm.location
             FROM AppBundle:BarMenu bm'
         );
 
-        $locations = $query->getResult();
+        $results = $query->getResult();
+
+        foreach($results as $result) {
+            $locations[] = $result['location'];
+        }
 
         return $locations;
     }

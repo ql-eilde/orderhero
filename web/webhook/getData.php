@@ -30,40 +30,41 @@
 // 	return $productsPayloads;
 // }
 
-function getProducts($payload, $db) {
-	if(preg_match("/^show/", $payload) === 1) {
-		$payload = "first_page:".$payload;
-	}
-	$requete = "
-		SELECT `title`,`subtitle`,`price`,`payload`
-		FROM `bar_product`
-		WHERE `location` = '$payload'
-		LIMIT 4
-	";
+// function getProducts($payload, $db) {
+// 	if(preg_match("/^show/", $payload) === 1) {
+// 		$payload = "first_page:".$payload;
+// 	}
+// 	$requete = "
+// 		SELECT `title`,`subtitle`,`price`,`payload`
+// 		FROM `bar_product`
+// 		WHERE `location` = '$payload'
+// 		LIMIT 4
+// 	";
 
-	if($query = mysqli_query($db, $requete)) {
-		for($data = array();$row = mysqli_fetch_assoc($query);$data[] = $row);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		for($data = array();$row = mysqli_fetch_assoc($query);$data[] = $row);
+// 		mysqli_free_result($query);
+// 	}
 	
-	return $data;
-}
+// 	return $data;
+// }
 
-function getProduct($payload, $db) {
-	$requete = "
-		SELECT *
-		FROM `bar_product`
-		WHERE `payload` = '$payload'
-		LIMIT 1
-	";
+// function getProduct($payload, $db) {
+// 	// findOneByPayload($payload)
+// 	$requete = "
+// 		SELECT *
+// 		FROM `bar_product`
+// 		WHERE `payload` = '$payload'
+// 		LIMIT 1
+// 	";
 
-	if($query = mysqli_query($db, $requete)) {
-		$data = mysqli_fetch_assoc($query);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		$data = mysqli_fetch_assoc($query);
+// 		mysqli_free_result($query);
+// 	}
 
-	return $data;
-}
+// 	return $data;
+// }
 
 // function getMenu($location, $db) {
 // 	$requete = "
@@ -96,20 +97,20 @@ function getProduct($payload, $db) {
 // 	return $menuLocations;
 // }
 
-function getProductsLocations($db) {
-	$requete = "SELECT DISTINCT `location` FROM `bar_product`";
+// function getProductsLocations($db) {
+// 	$requete = "SELECT DISTINCT `location` FROM `bar_product`";
 
-	if($query = mysqli_query($db, $requete)) {
-		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
-		mysqli_free_result($query);
-	}
+// 	if($query = mysqli_query($db, $requete)) {
+// 		for($resultat = array();$row = mysqli_fetch_assoc($query);$resultat[] = $row);
+// 		mysqli_free_result($query);
+// 	}
 
-	foreach($resultat as $value) {
-		$productsLocations[] = $value['location'];
-	}
+// 	foreach($resultat as $value) {
+// 		$productsLocations[] = $value['location'];
+// 	}
 
-	return $productsLocations;
-}
+// 	return $productsLocations;
+// }
 
 // function getTotalOfCart($sender, $db) {
 // 	$requete = "

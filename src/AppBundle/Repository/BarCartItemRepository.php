@@ -9,12 +9,6 @@ use AppBundle\Entity\BarProduct;
 
 class BarCartItemRepository extends EntityRepository
 {
-    // public function getCartItems(BarCart $cart)
-    // {
-    //     $em = $this->getEntityManager()->getRepository('AppBundle:BarCartItem');
-
-    // }
-
     public function setCartItem(BarProduct $product, BarCart $cart)
     {
         $newCartItem = new BarCartItem();

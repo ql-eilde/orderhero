@@ -12,7 +12,7 @@ class BarCartRepository extends EntityRepository
     public function addToCart(BarCart $cart, BarProduct $product)
     {
         $cartItemRepo = $this->_em->getRepository('AppBundle:BarCartItem');
-        $cartItemRepo->setCartItem($product, $cart->getId());
+        $cartItemRepo->setCartItem($product, $cart);
         $this->setCartTotal($cart);
     }
 
@@ -32,13 +32,17 @@ class BarCartRepository extends EntityRepository
 
     public function getCartTotal(BarCart $cart)
     {
-        $cartItemRepo = $this->_em->getRepository('AppBundle:BarCartItem');
+        $query = $this->_em->createQuery(
+            'SELECT bci.total
+            FROM AppBundle:BarCartItem bci
+            WHERE bci.barCart = :cart'
+        )->setParameter('cart', $cart->getId());
 
-        $cartItems = $cartItemRepo->findByBarCart($cart);
+        $results = $query->getResult();
 
         $total_array = array();
-        foreach($cartItems as $item) {
-            $total_array[] = $item['total'];
+        foreach($results as $result) {
+            $total_array[] = $result['total'];
         }
         $total = array_sum($total_array);
         
@@ -69,6 +73,6 @@ class BarCartRepository extends EntityRepository
 
         $total = $query->getResult();
 
-        return $total;
+        return $total[0]['total'];
     }
 }
