@@ -219,9 +219,9 @@ class Template
         return $response;
     }
 
-    public function anotherDrink($sender, $total)
+    public function anotherDrink($cart)
     {
-        $url = "https://www.orderhero.fr/payment/pay.php?psid=".$sender."&total=".$total;
+        $url = "https://www.orderhero.fr/pay/".$cart->getId();
         $response = [
             "attachment"=>[
                 "type"=>"template",
@@ -254,9 +254,9 @@ class Template
         return $response;
     }
 
-    public function payOrder($sender, $total)
+    public function payOrder($cart)
     {
-        $url = "https://www.orderhero.fr/payment/pay.php?psid=".$sender."&total=".$total;
+        $url = "https://www.orderhero.fr/pay/".$cart->getId();
         $response = [
             "attachment"=>[
                 "type"=>"template",

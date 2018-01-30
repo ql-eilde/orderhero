@@ -57,7 +57,7 @@ class Webhook
                 break;
             case 'payMyOrder':
                 $total = $this->barCartRepo->getTotalOfCart($cart);
-                $response = $this->template->payOrder($psid, $total['total']);
+                $response = $this->template->payOrder($cart);
                 break;
             default:
                 break;
@@ -87,7 +87,7 @@ class Webhook
                     $product = $this->barProductRepo->findOneByPayload($payload);
                     $this->barCartRepo->addToCart($cart, $product);
                     $total = $this->barCartRepo->getTotalOfCart($cart);
-                    $response = $this->template->anotherDrink($psid, $total);
+                    $response = $this->template->anotherDrink($cart);
                     break;
                 default:
                     $response = ["text"=>"Fin du menu."];
