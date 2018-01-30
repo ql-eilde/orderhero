@@ -31,20 +31,6 @@ class BarOrderItem
     /**
      * @var float
      *
-     * @ORM\Column(name="price", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $price;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="tax", type="float", precision=10, scale=0, nullable=false)
-     */
-    private $tax;
-
-    /**
-     * @var float
-     *
      * @ORM\Column(name="total", type="float", precision=10, scale=0, nullable=false)
      */
     private $total;
@@ -68,13 +54,6 @@ class BarOrderItem
      * })
      */
     private $barProduct;
-
-    /**
-     * @var bool
-     * 
-     * @ORM\Column(name="isServed", type="boolean", nullable=false)
-     */
-    private $isServed;
 
     /**
      * Get id
@@ -111,54 +90,6 @@ class BarOrderItem
     }
 
     /**
-     * Set price
-     *
-     * @param float $price
-     *
-     * @return BarOrderItem
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return float
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * Set tax
-     *
-     * @param float $tax
-     *
-     * @return BarOrderItem
-     */
-    public function setTax($tax)
-    {
-        $this->tax = $tax;
-
-        return $this;
-    }
-
-    /**
-     * Get tax
-     *
-     * @return float
-     */
-    public function getTax()
-    {
-        return $this->tax;
-    }
-
-    /**
      * Set total
      *
      * @param float $total
@@ -180,30 +111,6 @@ class BarOrderItem
     public function getTotal()
     {
         return $this->total;
-    }
-
-    /**
-     * Set isServed
-     *
-     * @param boolean $isServed
-     *
-     * @return BarOrderItem
-     */
-    public function setIsServed($isServed)
-    {
-        $this->isServed = $isServed;
-
-        return $this;
-    }
-
-    /**
-     * Get isServed
-     *
-     * @return boolean
-     */
-    public function getIsServed()
-    {
-        return $this->isServed;
     }
 
     /**
