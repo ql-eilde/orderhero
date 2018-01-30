@@ -2,6 +2,85 @@
 
 {% block title %}Commandes{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #fff;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Modal Header */
+    .modal-header {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    /* Modal Body */
+    .modal-body {padding: 2px 16px;}
+
+    /* Modal Footer */
+    .modal-footer {
+        padding: 2px 16px;
+        background-color: #5cb85c;
+        color: white;
+    }
+
+    /* Modal Content */
+    .modal-content {
+        position: relative;
+        background-color: #fefefe;
+        margin: auto;
+        padding: 0;
+        border: 1px solid #888;
+        width: 80%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+        animation-name: animatetop;
+        animation-duration: 0.4s
+    }
+
+    /* Add Animation */
+    @keyframes animatetop {
+        from {top: -300px; opacity: 0}
+        to {top: 0; opacity: 1}
+    }
+    </style>
+{% endblock %}
+
 {% block body %}
     <div id="wrapper">
         <header id="header">
@@ -26,13 +105,7 @@
                                         <tr>
                                             <td># {{ order.tableId }}</td>
                                             <td>
-                                                <ul style="list-style-type:none;line-height:1.8;padding-left:0">
-                                                    {% for item in ordersItems %}
-                                                        {% if item.barOrder.id == order.id %}
-                                                            <li>{{ item.barProduct.title }} - {{ item.barProduct.capacity }}</li>
-                                                        {% endif %}
-                                                    {% endfor %}
-                                                </ul>
+                                                <button id="myBtn" name="drinks" class="nephritis-flat-button" value="{{ order.id }}">Voir la commande</button>
                                             </td>
                                             <td>{{ order.total|number_format(2,'.','.') }} €</td>
                                             <td>
@@ -49,6 +122,20 @@
                         </table>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">&times;</span>
+                <h2>Détails de la commande</h2>
+            </div>
+            <div class="modal-body">
+                <ul id="list-drinks">
+                </ul>
             </div>
         </div>
     </div>
@@ -69,11 +156,52 @@
                     },
                     success: function(){
                         console.log('ok');
-                        //window.location='{{ path("orders") }}';
+                    }
+                });
+            }
+            if(this.name == "drinks") {
+                var orderId = this.value;
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path("order") }}',
+                    data: {
+                        id: orderId
+                    },
+                    success: function(orderItems){
+                        var modal = document.getElementById('myModal');
+                        var ul = document.getElementById("list-drinks");
+                        ul.append(orderItems);
+                        modal.style.display = "block";
                     }
                 });
             }
         });
     });
+
+    var modal = document.getElementById('myModal');
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("myBtn");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal 
+    {# btn.onclick = async function() {
+        await sleep(2000);
+        modal.style.display = "block";
+    } #}
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
     </script>
 {% endblock %}

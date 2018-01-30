@@ -22,39 +22,37 @@ class BackOfficeController extends Controller
         if($request->isMethod('POST')) {
             $data = $request->request->get('id');
             $order = $this->getDoctrine()->getRepository('AppBundle:BarOrder')->findOneById($data);
-            $orderItems = $this->getDoctrine()->getRepository('AppBundle:BarOrderItem')->findByBarOrder($data);
             $em = $this->getDoctrine()->getManager();
 
             $order->setIsServed(true);
-            foreach($orderItems as $item) {
-                $item->setIsServed(true);
-            }
             $em->flush();
             return new Response();
         }
         $orders = $this->getDoctrine()->getRepository('AppBundle:BarOrder')->findByIsServed(false);
-        $ordersItems = $this->getDoctrine()->getRepository('AppBundle:BarOrderItem')->findByIsServed(false);
-        $products = $this->getDoctrine()->getRepository('AppBundle:BarProduct')->findAll();
 
         return $this->render('AppBundle:BackOffice:orders.html.twig', array(
             "orders" => $orders,
-            "ordersItems" => $ordersItems,
-            "products" => $products,
         ));
     }
 
     /**
-     * @Route("/commande/{id}", name="order")
+     * @Route("/details-commande", name="order")
      */
-    public function orderAction($id)
+    public function orderAction(Request $request)
     {
-        $order = $this->getDoctrine()->getRepository('AppBundle:BarOrder')->findById($id);
-        $orderItems = $this->getDoctrine()->getRepository('AppBundle:BarOrderItem')->findByBarOrder($id);
+        if($request->isMethod('POST')) {
+            $id = $request->request->get('id');
+            $order = $this->getDoctrine()->getRepository('AppBundle:BarOrder')->findById($id);
+            $orderItems = $this->getDoctrine()->getRepository('AppBundle:BarOrderItem')->findByBarOrder($order);
 
-        return $this->render('AppBundle:BackOffice:order.html.twig', array(
-            "order" => $order,
-            "orderItems" => $orderItems
-        ));
+            $string = "";
+            foreach($orderItems as $orderItem) {
+                $product = $orderItem->getBarProduct();
+                $string .= "<li>".$product->getTitle()." - ".$product->getCapacity()."</li>";
+            }
+
+            return new Response($string);
+        }
     }
 
     /**

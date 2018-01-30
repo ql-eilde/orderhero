@@ -35,7 +35,7 @@ class PaymentController extends Controller
 
             try {
                 $charge = Charge::create(array(
-                    "amount" => $cart->getTotal(),
+                    "amount" => $cart->getTotal()*100,
                     "currency" => "eur",
                     "description" => "Paiement OrderHero",
                     "source" => $token,

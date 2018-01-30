@@ -34,7 +34,8 @@ class WebhookController extends Controller
         $input = json_decode(file_get_contents('php://input'), true);
 
         $psid= $input['entry'][0]['messaging'][0]['sender']['id'];
-        $cart = $this->getDoctrine()->getRepository('AppBundle:BarCart')->findOneByCustomerId($psid);
+        $cartRepo = $this->getDoctrine()->getRepository('AppBundle:BarCart');
+        $cart = $cartRepo->findOneByCustomerId($psid);
 
         if(isset($input['entry'][0]['messaging'][0]['message'])) {
             if(empty($cart)) {

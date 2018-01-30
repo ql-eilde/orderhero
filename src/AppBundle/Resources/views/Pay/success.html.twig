@@ -34,13 +34,13 @@
         <h1>Paiement effectué avec succès.</h1>
         <p>Date : {{ "now"|date("d/m/Y") }}</p>
         <p>Montant : {{ total|number_format(2, ',', ' ') }}</p>
-        <p>Cette page ce fermera automatiquement dans 5 secondes.</p>
+        <p>Cette page ce fermera automatiquement dans 10 secondes.</p>
     </div>
     <script>
         window.extAsyncInit = function() {
             setTimeout(function(){
                 MessengerExtensions.requestCloseBrowser();
-            },5000);
+            },10000);
         };
 
         (function(d, s, id){
