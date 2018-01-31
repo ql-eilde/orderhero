@@ -180,6 +180,11 @@
 {% block javascripts %}
     {{ parent() }}
     <script>
+    function reload() {
+        location.reload();
+    };
+    setTimeout(reload, 10000);
+
     $(document).ready(function(){
         $('button').click(function() {
             if(this.name == "served") {

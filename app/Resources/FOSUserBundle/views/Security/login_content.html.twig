@@ -1,0 +1,26 @@
+<form class="form-signin">
+    <h1 class="h3 mb-3 font-weight-normal">Connectez-vous</h1>
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    <form action="{{ path("fos_user_security_check") }}" method="post" role="form">
+        {% if csrf_token %}
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+        {% endif %}
+
+        <label for="username" class="sr-only">Nom d'utilisateur</label>
+        <input type="text" id="username" class="form-control" name="_username" value="{{ last_username }}" placeholder="Nom d'utilisateur" required autofocus>
+
+        <label for="password" class="sr-only">Mot de passe</label>
+        <input type="password" id="password" class="form-control" name="_password" placeholder="Mot de passe" required>
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on"> Se souvenir de moi
+            </label>
+        </div>
+
+        <button class="btn btn-lg btn-primary btn-block" id="_submit" name="_submit" type="submit">Connexion</button>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017-2018</p>
+    </form>
+</form>
