@@ -27,49 +27,54 @@ class WebhookController extends Controller
         // }
 
         // if($hub_verify_token === $verify_token) {
-        //     return new Response($challenge);
+        //     return new Response($challenge, Response::HTTP_OK);
         // }
         // Fin vérification du webhook
 
         $input = json_decode(file_get_contents('php://input'), true);
 
-        $psid= $input['entry'][0]['messaging'][0]['sender']['id'];
+        $psid = $input['entry'][0]['messaging'][0]['sender']['id'];
         $cartRepo = $this->getDoctrine()->getRepository('AppBundle:BarCart');
         $cart = $cartRepo->findOneByCustomerId($psid);
 
-        if(isset($input['entry'][0]['messaging'][0]['message'])) {
-            if(empty($cart)) {
-                $response = ["text"=>"Veuillez tout d'abord scanner un code messenger. C'est pour mieux vous servir mon enfant!"];
-                $webhook->reply($response, $psid);
-            } else {
-                $message = $input['entry'][0]['messaging'][0]['message']['text'];
-                $webhook->handleMessage($cart, $message);
-            }
-        } elseif (isset($input['entry'][0]['messaging'][0]['postback'])) {
-            $payload = $input['entry'][0]['messaging'][0]['postback']['payload'];
-            if(isset($input['entry'][0]['messaging'][0]['postback']['referral'])) {
+        if(isset($input['object']) && $input['object'] === "page")
+        {
+            if(isset($input['entry'][0]['messaging'][0]['message'])) {
                 if(empty($cart)) {
-                    $table_id = $input['entry'][0]['messaging'][0]['postback']['referral']['ref'];
-                    $newCart = $cartRepo->setCart($psid, $table_id);
-                }
-                $webhook->handlePostback($newCart, $payload);
-            } else {
-                if(empty($cart)) {
-                    $response = ["text"=>"Veuillez tout d'abord scanner un code messenger... C'est pour mieux vous servir mon enfant!"];
+                    $response = ["text"=>"Veuillez tout d'abord scanner un code messenger. C'est pour mieux vous servir mon enfant!"];
                     $webhook->reply($response, $psid);
                 } else {
-                    $webhook->handlePostback($cart, $payload);
+                    $message = $input['entry'][0]['messaging'][0]['message']['text'];
+                    $webhook->handleMessage($cart, $message);
                 }
+            } elseif (isset($input['entry'][0]['messaging'][0]['postback'])) {
+                $payload = $input['entry'][0]['messaging'][0]['postback']['payload'];
+                if(isset($input['entry'][0]['messaging'][0]['postback']['referral'])) {
+                    if(empty($cart)) {
+                        $table_id = $input['entry'][0]['messaging'][0]['postback']['referral']['ref'];
+                        $newCart = $cartRepo->setCart($psid, $table_id);
+                    }
+                    $webhook->handlePostback($newCart, $payload);
+                } else {
+                    if(empty($cart)) {
+                        $response = ["text"=>"Veuillez tout d'abord scanner un code messenger... C'est pour mieux vous servir mon enfant!"];
+                        $webhook->reply($response, $psid);
+                    } else {
+                        $webhook->handlePostback($cart, $payload);
+                    }
+                }
+            } elseif(isset($input['entry'][0]['messaging'][0]['referral'])) {
+                if(empty($cart)) {
+                    $table_id = $input['entry'][0]['messaging'][0]['referral']['ref'];
+                    $newCart = $cartRepo->setCart($psid, $table_id);
+                }
+                $response = ["text"=>"Merci d'avoir scanné votre code messenger. Vous pouvez maintenant commander :-)"];
+                $webhook->reply($response, $psid);
             }
-        } elseif(isset($input['entry'][0]['messaging'][0]['referral'])) {
-            if(empty($cart)) {
-                $table_id = $input['entry'][0]['messaging'][0]['referral']['ref'];
-                $newCart = $cartRepo->setCart($psid, $table_id);
-            }
-            $response = ["text"=>"Merci d'avoir scanné votre code messenger. Vous pouvez maintenant commander :-)"];
-            $webhook->reply($response, $psid);
-        }
 
-        return new Response();
+            return new Response('EVENT_RECEIVED', Response::HTTP_OK);
+        } else {
+            new Response('ERROR', Response::HTTP_NOT_FOUND);
+        }
     }
 }

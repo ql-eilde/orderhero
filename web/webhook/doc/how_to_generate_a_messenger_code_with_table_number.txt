@@ -1,3 +1,0 @@
-How to generate a messenger code with table number as ref:
-
-Resource: https://developers.facebook.com/docs/messenger-platform/discovery/messenger-codes

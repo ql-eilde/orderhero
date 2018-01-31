@@ -96,6 +96,25 @@ class Webhook
         $this->reply($response, $psid);
     }
 
+    public function typingOn($psid)
+    {
+        $message = [
+            "recipient"=>[
+                "id"=>$psid
+            ],
+            "sender_action"=>"typing_on"
+        ];
+
+        $access_token = $this->container->getParameter('access_token');
+        $url = 'https://graph.facebook.com/v2.6/me/messages?access_token='.$access_token;
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($message));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    
+        curl_exec($ch);
+    }
+
     public function reply($response, $psid)
     {
         $message = [
