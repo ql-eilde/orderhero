@@ -10,6 +10,7 @@
         display: none; /* Hidden by default */
         position: fixed; /* Stay in place */
         z-index: 1; /* Sit on top */
+        padding-top: 50px;
         left: 0;
         top: 0;
         width: 100%; /* Full width */
@@ -78,6 +79,35 @@
         from {top: -300px; opacity: 0}
         to {top: 0; opacity: 1}
     }
+
+    #list-drinks {
+        color: black;
+    }
+
+    /* The alert message box */
+    .alert {
+        padding: 20px;
+        background-color: #27ae60; /* Red */
+        color: white;
+        margin-bottom: 15px;
+    }
+
+    /* The close button */
+    .closebtn {
+        margin-left: 15px;
+        color: white;
+        font-weight: bold;
+        float: right;
+        font-size: 22px;
+        line-height: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    /* When moving the mouse over the close button */
+    .closebtn:hover {
+        color: black;
+    }
     </style>
 {% endblock %}
 
@@ -87,6 +117,13 @@
             <h1>Commandes en cours <a style="color:#3498db;font-size:16px;text-decoration:none;padding-left:1%" href="{{ path('orders_history') }}">voir l'historique des commandes</a></h1>
         <header>
         <div id="main">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert" style="display: none;">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span> 
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="box">
@@ -102,10 +139,10 @@
                             <tbody>
                                 {% if orders is not empty %}
                                     {% for order in orders %}
-                                        <tr>
+                                        <tr id="order-{{ order.id }}">
                                             <td># {{ order.tableId }}</td>
                                             <td>
-                                                <button id="myBtn" name="drinks" class="nephritis-flat-button" value="{{ order.id }}">Voir la commande</button>
+                                                <button name="drinks" class="nephritis-flat-button" value="{{ order.id }}">Voir la commande</button>
                                             </td>
                                             <td>{{ order.total|number_format(2,'.','.') }} €</td>
                                             <td>
@@ -147,6 +184,7 @@
         $('button').click(function() {
             if(this.name == "served") {
                 $(this).attr("disabled","disabled");
+                var td = $(this).parent().parent();
                 var orderId = this.value;
                 $.ajax({
                     type: 'POST',
@@ -155,7 +193,10 @@
                         id: orderId
                     },
                     success: function(){
-                        console.log('ok');
+                        var alert = $(".alert");
+                        td.css("display", "none");
+                        alert.css("display", "");
+                        alert.append("La commande est servie !");
                     }
                 });
             }
@@ -168,10 +209,11 @@
                         id: orderId
                     },
                     success: function(orderItems){
-                        var modal = document.getElementById('myModal');
-                        var ul = document.getElementById("list-drinks");
+                        var modal = $("#myModal");
+                        var ul = $("#list-drinks");
+                        ul.empty();
                         ul.append(orderItems);
-                        modal.style.display = "block";
+                        modal.css("display", "block");
                     }
                 });
             }
@@ -180,17 +222,7 @@
 
     var modal = document.getElementById('myModal');
 
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-
-    // Get the <span> element that closes the modal
     var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on the button, open the modal 
-    {# btn.onclick = async function() {
-        await sleep(2000);
-        modal.style.display = "block";
-    } #}
 
     // When the user clicks on <span> (x), close the modal
     span.onclick = function() {

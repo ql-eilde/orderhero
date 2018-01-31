@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use AppBundle\Entity\BarOrder;
 
 class BackOfficeController extends Controller
 {
@@ -38,7 +39,7 @@ class BackOfficeController extends Controller
     /**
      * @Route("/details-commande", name="order")
      */
-    public function orderAction(Request $request)
+    public function orderDetailsAction(Request $request)
     {
         if($request->isMethod('POST')) {
             $id = $request->request->get('id');
@@ -71,6 +72,16 @@ class BackOfficeController extends Controller
 
         return $this->render('AppBundle:BackOffice:orders_history.html.twig', array(
             'orders' => $pagination
+        ));
+    }
+
+    /**
+     * @Route("/historique-commande/{order}", name="order_history")
+     */
+    public function orderHistoryAction(BarOrder $order)
+    {
+        return $this->render('AppBundle:BackOffice:order_history.html.twig', array(
+            'order' => $order
         ));
     }
 }

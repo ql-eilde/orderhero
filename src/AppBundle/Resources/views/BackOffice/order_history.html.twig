@@ -1,0 +1,26 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block title %}Historique commande n°{{ order.id }}{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <header id="header">
+            <h1>Historique de la commande n°{{ order.id }} <a style="color:#3498db;font-size:16px;text-decoration:none;padding-left:1%" href="{{ path('orders_history') }}">revenir à l'historique des commandes</a></h1>
+        </header>
+        <div id="main">
+            <div class="row">
+                <div class="col-md-12">
+                    <ul>
+                        <li>Numéro de la commande : {{ order.id }}</li>
+                        <li>Numéro transaction Stripe : {{ order.chargeId }}</li>
+                        <li>Numéro client PSID (identifiant facebook) : {{ order.customerId }}</li>
+                        <li>Date de la commande : {{ order.timestamp|date('d/m/Y H:i') }}</li>
+                        <li>Identifiant de la table : {{ order.tableId }}</li>
+                        <li>Total de la commande : {{ order.total|number_format(2, ',', ' ') }}</li>
+                        <li>Statut de la commande : {{ order.isServed }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

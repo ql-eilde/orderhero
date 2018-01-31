@@ -55,7 +55,7 @@
             if(this.name == "details") {
                 $(this).attr("disabled","disabled");
                 var orderId = this.value;
-                var route = "{{ path('order', {'id': "PLACEHOLDER"}) }}";
+                var route = "{{ path('order_history', {'order': "PLACEHOLDER"}) }}";
                 window.location = route.replace("PLACEHOLDER", orderId);
             }
         });

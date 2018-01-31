@@ -11,7 +11,7 @@ use AppBundle\Service\Webhook;
 class WebhookController extends Controller
 {
     /**
-     * @Route("/webhook-test")
+     * @Route("/webhook")
      */
     public function indexAction(Webhook $webhook)
     {
