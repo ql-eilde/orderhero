@@ -10,6 +10,9 @@ use AppBundle\Entity\BarOrder;
 
 class BackOfficeController extends Controller
 {
+    /**
+     * @Route("/dashboard", name="dashboard")
+     */
     public function indexAction()
     {
         return $this->render('AppBundle:BackOffice:index.html.twig', array());
