@@ -52,6 +52,11 @@ class BarUser implements UserInterface, \Serializable
      */
     private $isActive;
 
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $roles = array();
+
     public function __construct()
     {
         $this->isActive = true;
@@ -76,7 +81,15 @@ class BarUser implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return array('ROLE_USER');
+        return $this->roles;
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+
+        // allows for chaining
+        return $this;
     }
 
     public function eraseCredentials()

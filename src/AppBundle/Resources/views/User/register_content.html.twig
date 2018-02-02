@@ -1,0 +1,37 @@
+<body class="text-center">
+    <form name="user" method="post" class="form-signup">
+
+        <h1 class="h1">Order Hero</h1>
+        <h4 class="h4 mb-3 font-weight-light">Inscription</h4>
+
+        {% if form.children._token.vars.value %}
+            <input type="hidden" id="user__token" name="user[_token]" value="{{ form.children._token.vars.value }}" />
+        {% endif %}
+
+        <label class="sr-only required" for="user_username">Nom d&#039;utilisateur</label>
+        
+        <input type="text" id="user_username" name="user[username]" required="required" class="form-control" placeholder="Nom d&#039;utilisateur" required="required" />
+
+        <label class="sr-only required" for="user_email">Email</label>
+        
+        <input type="email" id="user_email" name="user[email]" required="required" class="form-control" placeholder="Email" required="required" />
+
+        <label class="sr-only required" for="user_plainPassword_first">Mot de passe</label>
+        
+        <input type="password" id="user_plainPassword_first" name="user[plainPassword][first]" required="required" class="form-control" placeholder="Mot de passe" required="required" />
+
+        <label class="sr-only required" for="user_plainPassword_second">Répéter mot de passe</label>
+        
+        <input type="password" id="user_plainPassword_second" name="user[plainPassword][second]" required="required" class="form-control" placeholder="Répéter mot de passe" required="required" />
+
+        <label class="required">Rôles</label><br>
+        
+        <input type="checkbox" class="form-check-input" id="user_roles_0" name="user[roles][]" value="ROLE_ADMIN" />
+        <label for="user_roles_0">ROLE_ADMIN</label><br>
+        <input type="checkbox" class="form-check-input" id="user_roles_1" name="user[roles][]" value="ROLE_USER" />
+        <label for="user_roles_1">ROLE_USER</label>
+
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Inscription</button>
+
+    </form>
+</body>

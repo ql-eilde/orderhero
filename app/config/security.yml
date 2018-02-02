@@ -39,6 +39,6 @@ security:
         - { path: ^/webhook, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/pay, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/process, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: ROLE_SUPER_ADMIN }
+        - { path: ^/register, role: ROLE_ADMIN }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/, role: ROLE_USER }
