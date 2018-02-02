@@ -221,7 +221,7 @@ class Template
 
     public function anotherDrink($cart)
     {
-        $url = "https://5802d741.ngrok.io/pay/".$cart->getId();
+        $url = "https://www.orderhero.fr/pay/".$cart->getId();
         $response = [
             "attachment"=>[
                 "type"=>"template",
@@ -256,7 +256,7 @@ class Template
 
     public function payOrder($cart)
     {
-        $url = "https://5802d741.ngrok.io/pay/".$cart->getId();
+        $url = "https://www.orderhero.fr/pay/".$cart->getId();
         $response = [
             "attachment"=>[
                 "type"=>"template",
